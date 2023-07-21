@@ -5,7 +5,8 @@
     <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="/webjars/bootstrap/5.0.2/css/bootstrap.min.css"/>
     <script src="/webjars/bootstrap/5.0.2/js/bootstrap.min.js"></script>
-</head>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script></head>
 <body>
 <div class="container">
     <h2 class="text-center">Chat Room</h2>
@@ -26,42 +27,7 @@
             </div>
         </div>
     </div>
-
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        let ws = null;
-
-        $(function () {
-            ws = new WebSocket('ws://localhost:8080/ws/chat');
-
-            ws.onmessage = function (data) {
-                appendMessage(data.data);
-            };
-
-            ws.onerror = function(error) {
-                console.log("Error:", error);
-            }
-
-            $('#msg_send_btn').click(function () {
-                let msgContentInput = $('#msg_content');
-                ws.send(msgContentInput.val());
-                msgContentInput.val('');
-            });
-        });
-
-        function appendMessage(msg) {
-            $('#msg_history').append(
-                $('<div>').addClass('incoming_msg').append(
-                    $('<div>').addClass('received_msg').append(
-                        $('<div>').addClass('received_withd_msg').append(
-                            $('<p>').text(msg)
-                        )
-                    )
-                )
-            );
-        }
-        /*]]>*/
-    </script>
+    <script th:src="@{/chat.js}"></script>
 </div>
 </body>
 </html>

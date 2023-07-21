@@ -19,6 +19,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic"); // sub
-        config.setApplicationDestinationPrefixes("/app"); // pub
+        config.setApplicationDestinationPrefixes("/app"); // pub (@MessageMapping에서 받는다)
     }
 }
