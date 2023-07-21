@@ -5,7 +5,9 @@ $(document).ready(function() {
     stomp.connect({}, function() {
         console.log("Connected");
 
-        stomp.subscribe("/topic/chat", function (chat) {
+        const qs = getQueryString();
+
+        stomp.subscribe("/topic/chat/" + qs["id"], function (chat) {
             appendMessage(chat.body);
         })
 
@@ -13,7 +15,8 @@ $(document).ready(function() {
         // /app 경로에서는 해당 메시지를 받고 구독하고 있는 사람들에게 뿌려준다.
         $('#msg_send_btn').click(function () {
             let msgContentInput = $('#msg_content');
-            stomp.send('/app/send', {}, msgContentInput.val());
+            console.log('/app/send/' + qs["id"])
+            stomp.send('/app/send/' + qs["id"], {}, msgContentInput.val());
             msgContentInput.val('');
         });
     })
@@ -31,3 +34,16 @@ function appendMessage(msg) {
         )
     );
 }
+
+function getQueryString() {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    let params = {};
+    for (let param of urlParams) {
+        params[param[0]] = param[1];
+    }
+
+    return params;
+}
+
+
